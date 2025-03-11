@@ -1,0 +1,327 @@
+{
+    "el_assessment": {
+        "pattern": {
+            "elements": [
+                {
+                    "name": "Assessment",
+                    "pattern": ".+",
+                    "datatype": "String"
+                },
+                {
+                    "name": "Month",
+                    "pattern": "\\b\\w+\\b",
+                    "datatype": "String"
+                },
+                {
+                    "name": "Year",
+                    "pattern": "\\b\\d+\\b",
+                    "datatype": "Int16"
+                },
+                {
+                    "name": "Unit",
+                    "pattern": "Status|Value",
+                    "datatype": "String"
+                }
+            ],
+            "separator": "[\\s:]"
+        },
+        "outputs": {
+            "names": {
+                "method": "passthrough",
+                "value": "Unit"
+            },
+            "types": {
+                "method": "lookup",
+                "value": "Unit",
+                "mapping": {
+                    "Status": "String",
+                    "Value": "Float64"
+                }
+            }
+        },
+        "key_label": "pk"
+    },
+    "ela": {
+        "pattern": {
+            "elements": [
+                {
+                    "pattern": "^ELA"
+                },
+                {
+                    "name": "Unit",
+                    "pattern": "Status|Value",
+                    "datatype": "String"
+                }
+            ],
+            "separator": "[\\s:]"
+        },
+        "outputs": {
+            "names": {
+                "method": "passthrough",
+                "value": "Unit"
+            },
+            "types": {
+                "method": "lookup",
+                "value": "Unit",
+                "mapping": {
+                    "Status": "String",
+                    "Value": "Float64"
+                }
+            }
+        },
+        "key_label": "pk"
+    },
+    "forward": {
+        "pattern": {
+            "elements": [
+                {
+                    "pattern": "Forward"
+                },
+                {
+                    "pattern": "-"
+                },
+                {
+                    "name": "Subject",
+                    "pattern": "ELA|Math\\w*",
+                    "datatype": "String"
+                },
+                {
+                    "name": "Unit",
+                    "pattern": "Most Recent Result|Status",
+                    "datatype": "String"
+                }
+            ],
+            "separator": "[\\s:]"
+        },
+        "outputs": {
+            "names": {
+                "method": "passthrough",
+                "value": "Unit"
+            },
+            "types": {
+                "method": "lookup",
+                "value": "Unit",
+                "mapping": {
+                    "Status": "String",
+                    "Most Recent Result": "Float64"
+                }
+            }
+        },
+        "key_label": "pk"
+    },
+    "intervention": {
+        "pattern": {
+            "elements": [
+                {
+                    "pattern": "Intervention"
+                },
+                {
+                    "name": "Number",
+                    "pattern": "\\d+",
+                    "datatype": "Int8"
+                },
+                {
+                    "name": "Detail",
+                    "pattern": ".+",
+                    "datatype": "String"
+                }
+            ],
+            "separator": "[\\s:]"
+        },
+        "outputs": {
+            "names": {
+                "method": "passthrough",
+                "value": "Detail"
+            },
+            "types": {
+                "method": "lookup",
+                "value": "Detail",
+                "mapping": {
+                    "Status": "String",
+                    "Start Date": "String",
+                    "Type and Strategy": "String",
+                    "Tier": "String"
+                }
+            }
+        },
+        "key_label": "pk"
+    },
+    "intervention_count": {
+        "pattern": {
+            "elements": [
+                {
+                    "name": "Interventions",
+                    "pattern": "Number of Interventions",
+                    "datatype": "String"
+                }
+            ],
+            "separator": "[\\s:]"
+        },
+        "outputs": {
+            "names": {
+                "method": "literal",
+                "value": "Number of Interventions"
+            },
+            "types": {
+                "method": "literal",
+                "value": "Int8"
+            }
+        },
+        "key_label": "pk"
+    },
+    "nwea_map": {
+        "pattern": {
+            "elements": [
+                {
+                    "pattern": "NWEA MAP"
+                },
+                {
+                    "name": "ScoreType",
+                    "pattern": "Growth",
+                    "datatype": "String"
+                },
+                {
+                    "name": "Subject",
+                    "pattern": "Math\\w*|(Spanish )?Reading",
+                    "datatype": "String"
+                },
+                {
+                    "name": "GradeRange",
+                    "pattern": "\\S+",
+                    "datatype": "String"
+                },
+                {
+                    "name": "Edition",
+                    "pattern": "\\S+",
+                    "datatype": "String"
+                },
+                {
+                    "name": "Year",
+                    "pattern": "\\b\\d+\\b",
+                    "datatype": "Int16"
+                },
+                {
+                    "name": "Version",
+                    "pattern": "V\\d",
+                    "optional": true,
+                    "datatype": "String"
+                },
+                {
+                    "name": "Season",
+                    "pattern": "Fall|Winter|Spring",
+                    "datatype": "String"
+                },
+                {
+                    "name": "Unit",
+                    "pattern": "Status|Value",
+                    "datatype": "String"
+                },
+                {
+                    "name": "Duplicated",
+                    "pattern": "_duplicated_\\d+",
+                    "optional": true,
+                    "datatype": "String"
+                }
+            ],
+            "separator": "[\\s:]"
+        },
+        "outputs": {
+            "names": {
+                "method": "passthrough",
+                "value": "Unit"
+            },
+            "types": {
+                "method": "lookup",
+                "value": "Unit",
+                "mapping": {
+                    "Status": "String",
+                    "Value": "Float64"
+                }
+            }
+        },
+        "key_label": "pk"
+    },
+    "pearson_aims": {
+        "pattern": {
+            "elements": [
+                {
+                    "pattern": "aimswebPlus"
+                },
+                {
+                    "name": "Assessment",
+                    "pattern": ".+",
+                    "datatype": "String"
+                },
+                {
+                    "pattern": "-"
+                },
+                {
+                    "name": "Grade",
+                    "pattern": ".+",
+                    "datatype": "String"
+                },
+                {
+                    "name": "Season",
+                    "pattern": "Fall|Winter|Spring|Summer",
+                    "datatype": "String"
+                },
+                {
+                    "name": "Unit",
+                    "pattern": "Status|Value",
+                    "datatype": "String"
+                }
+            ],
+            "separator": "[\\s:]"
+        },
+        "outputs": {
+            "names": {
+                "method": "passthrough",
+                "value": "Unit"
+            },
+            "types": {
+                "method": "lookup",
+                "value": "Unit",
+                "mapping": {
+                    "Status": "String",
+                    "Value": "Float64"
+                }
+            }
+        },
+        "key_label": "pk"
+    },
+    "student": {
+        "pattern": {
+            "elements": [
+                {
+                    "optional": true,
+                    "pattern": "Student"
+                },
+                {
+                    "name": "Field",
+                    "pattern": "Date of Birth|Gender|Grade Level|First Name|Last Name|Student Number",
+                    "datatype": "String"
+                }
+            ],
+            "separator": "[\\s:]"
+        },
+        "outputs": {
+            "names": {
+                "method": "passthrough",
+                "value": "Field"
+            },
+            "types": {
+                "method": "lookup",
+                "value": "Field",
+                "mapping": {
+                    "Date of Birth": "Date",
+                    "Gender": "String",
+                    "Grade Level": "String",
+                    "First Name": "String",
+                    "Last Name": "String",
+                    "Student Number": "Int64"
+                }
+            }
+        },
+        "key_label": "pk"
+    }
+}

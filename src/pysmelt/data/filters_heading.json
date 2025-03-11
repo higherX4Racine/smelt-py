@@ -1,0 +1,22 @@
+{
+    "filters": {
+        "pattern": {
+            "elements": [
+                {
+                    "pattern": "Filters"
+                },
+                {
+                    "pattern": "Grade Level"
+                },
+                {
+                    "name": "Grade",
+                    "pattern": ".+",
+                    "datatype": "String"
+                }
+            ],
+            "separator": "[\\s:]"
+        },
+        "cell_types": "String",
+        "key_label": "pk"
+    }
+}
