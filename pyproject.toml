@@ -1,0 +1,76 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pysmelt"
+version = "0.1.0"
+description = "Work with data about Early Literacy downloaded from Panorama"
+readme = "README.rst"
+authors = [
+  {name = "Ben Taft", email = "ben.taft@career2cradle.org"}
+]
+maintainers = [
+  {name = "Ben Taft", email = "ben.taft@career2cradle.org"}
+]
+classifiers = [
+
+]
+license = {text = "MIT license"}
+dependencies = [
+
+]
+
+[project.optional-dependencies]
+dev = [
+    "coverage",  # testing
+    "mypy",  # linting
+    "pytest",  # testing
+    "ruff"  # linting
+]
+
+[project.urls]
+
+bugs = "https://github.com/higherX4Racine/pysmelt/issues"
+changelog = "https://github.com/higherX4Racine/pysmelt/blob/master/changelog.md"
+homepage = "https://github.com/higherX4Racine/pysmelt"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+pysmelt = [
+    "header_patterns.json"
+]
+
+
+
+
+# Mypy
+# ----
+
+[tool.mypy]
+files = "."
+
+# Use strict defaults
+strict = true
+warn_unreachable = true
+warn_no_return = true
+
+[[tool.mypy.overrides]]
+# Don't require test functions to include types
+module = "tests.*"
+allow_untyped_defs = true
+disable_error_code = "attr-defined"
+
+
+# PyTest
+# ------
+
+[tool.pytest.ini_options]
+filterwarnings = "error"
+addopts = [
+    "--cov=pysmelt",
+    "--cov-report=term-missing",
+    "--import-mode=importlib",
+]

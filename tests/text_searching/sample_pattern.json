@@ -1,0 +1,39 @@
+{
+    "elements": [
+        {
+            "pattern": "NWEA MAP"
+        },
+        {
+            "name": "ScoreType",
+            "pattern": "Growth",
+            "datatype": "String"
+        },
+        {
+            "name": "Subject",
+            "pattern": "Math\\w*|(Spanish )?Reading",
+            "datatype": "String"
+        },
+        {
+            "name": "GradeRange",
+            "pattern": "\\S+",
+            "datatype": "String"
+        },
+        {
+            "name": "Edition",
+            "pattern": "\\S+",
+            "datatype": "String"
+        },
+        {
+            "name": "Year",
+            "pattern": "\\b\\d+\\b",
+            "datatype": "Int16"
+        },
+        {
+            "name": "Version",
+            "pattern": "V\\d",
+            "optional": true,
+            "datatype": "String"
+        }
+    ],
+    "separator": "[\\s:]"
+}
