@@ -12,7 +12,7 @@ from polars import (
 
 import pytest
 
-from smelt_py.text_searching import (
+from smelt_py.matching import (
     Capture,
     Element,
     Pattern,

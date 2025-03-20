@@ -6,14 +6,14 @@ from polars import (
     col,
 )
 
-from .database import (
+from .primary_key_plan import (
     PrimaryKeyPlan,
 )
-from .output_rules import (
+from ..output_rules import (
     OutputRule,
     OutputRuleBuilder,
 )
-from .text_searching import (
+from ..matching import (
     TypedCapture,
     PolarsCaster,
     Pattern

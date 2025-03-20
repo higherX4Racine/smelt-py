@@ -5,7 +5,7 @@ from re import search
 
 from polars import datatypes
 import pytest
-from smelt_py.text_searching.element import Element
+from smelt_py.matching.element import Element
 
 
 @pytest.mark.parametrize("pattern", ["", None, ])

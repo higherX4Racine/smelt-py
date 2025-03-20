@@ -14,11 +14,11 @@ from polars import (
 
 import pytest
 
-from smelt_py.heading_parser import HeadingParser
+from smelt_py.parsing.heading_parser import HeadingParser
 from smelt_py.output_rules.literal import Literal as LiteralOutputRule
 from smelt_py.output_rules.passthrough import Passthrough as PassthroughOutputRule
 from smelt_py.output_rules.lookup import Lookup as LookupOutputRule
-from smelt_py.text_searching import TypedCapture, Element, Pattern
+from smelt_py.matching import TypedCapture, Element, Pattern
 
 
 @pytest.fixture(scope="module")
@@ -128,7 +128,7 @@ def test_no_captures_in_heading(parser):
 
 @pytest.fixture(scope="module")
 def parsed_json() -> dict:
-    with open("tests/sample_heading_parser.json", "r") as fh:
+    with open("tests/parsing/sample_heading_parser.json", "r") as fh:
         pj = load(fh)
     return pj
 

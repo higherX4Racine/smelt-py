@@ -5,6 +5,7 @@ from uuid import uuid4
 from polars import Binary, DataFrame, col, Schema
 from polars.exceptions import NoRowsReturnedError
 
+
 class PrimaryKeyPlan:
     datatype = Binary
 

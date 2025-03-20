@@ -2,8 +2,8 @@ from json import load
 
 import pytest
 
-from smelt_py.text_searching.pattern import Pattern
-from smelt_py.text_searching.element import Element
+from smelt_py.matching.pattern import Pattern
+from smelt_py.matching.element import Element
 
 
 @pytest.fixture(scope="module")
@@ -56,7 +56,7 @@ def test_searching(pattern, string, match, captures):
 
 
 def test_pattern_from_json():
-    with open("tests/text_searching/sample_pattern.json", "r") as fh:
+    with open("tests/matching/sample_pattern.json", "r") as fh:
         parsed_json = load(fh)
     p = Pattern.from_json(parsed_json)
     assert p.render() == r"""(?:NWEA MAP)[\s:]+(?P<ScoreType>Growth)[\s:]+(?P<Subject>Math\w*|(Spanish )?Reading)[\s:]+(?P<GradeRange>\S+)[\s:]+(?P<Edition>\S+)[\s:]+(?P<Year>\b\d+\b)[\s:]*(?P<Version>(?:V\d)?)"""
