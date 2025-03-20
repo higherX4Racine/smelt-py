@@ -98,7 +98,7 @@ class HeadingTracker:
                       maintain_order=True)
         )
         column_types = {
-            f"column_{column + 1}": data["datatype"][0]
+            f"column_{column + 1}": data["datatype"][0] #noqa
             if data.height == 1 else String
             for (column,), data in column_data
         }

@@ -13,7 +13,7 @@ from polars import (
     String,
 )
 
-from pysmelt.database.heading_tracker import HeadingTracker
+from smelt_py.database.heading_tracker import HeadingTracker
 
 
 @pytest.mark.parametrize("label", [

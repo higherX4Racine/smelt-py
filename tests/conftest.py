@@ -1,6 +1,6 @@
 import pytest
 
-from pysmelt.database import primary_key_plan
+from smelt_py.database import primary_key_plan
 
 
 @pytest.fixture(scope="package")

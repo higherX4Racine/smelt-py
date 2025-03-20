@@ -14,11 +14,11 @@ from polars import (
 
 import pytest
 
-from pysmelt.heading_parser import HeadingParser
-from pysmelt.output_rules.literal import Literal as LiteralOutputRule
-from pysmelt.output_rules.passthrough import Passthrough as PassthroughOutputRule
-from pysmelt.output_rules.lookup import Lookup as LookupOutputRule
-from pysmelt.text_searching import TypedCapture, Element, Pattern
+from smelt_py.heading_parser import HeadingParser
+from smelt_py.output_rules.literal import Literal as LiteralOutputRule
+from smelt_py.output_rules.passthrough import Passthrough as PassthroughOutputRule
+from smelt_py.output_rules.lookup import Lookup as LookupOutputRule
+from smelt_py.text_searching import TypedCapture, Element, Pattern
 
 
 @pytest.fixture(scope="module")

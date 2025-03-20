@@ -1,1 +1,1 @@
-"""Unit test package for pysmelt."""
+"""Unit test package for smelt_py."""

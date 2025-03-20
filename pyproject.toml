@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pysmelt"
+name = "smelt-py"
 version = "0.1.0"
 description = "Work with data about Early Literacy downloaded from Panorama"
 readme = "README.rst"
@@ -31,19 +31,12 @@ dev = [
 
 [project.urls]
 
-bugs = "https://github.com/higherX4Racine/pysmelt/issues"
-changelog = "https://github.com/higherX4Racine/pysmelt/blob/master/changelog.md"
-homepage = "https://github.com/higherX4Racine/pysmelt"
+bugs = "https://github.com/higherX4Racine/smelt-py/issues"
+changelog = "https://github.com/higherX4Racine/smelt-py/blob/master/changelog.md"
+homepage = "https://github.com/higherX4Racine/smelt-py"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-
-[tool.setuptools.package-data]
-pysmelt = [
-    "header_patterns.json"
-]
-
-
 
 
 # Mypy
@@ -70,7 +63,7 @@ disable_error_code = "attr-defined"
 [tool.pytest.ini_options]
 filterwarnings = "error"
 addopts = [
-    "--cov=pysmelt",
+    "--cov=smelt_py",
     "--cov-report=term-missing",
     "--import-mode=importlib",
 ]

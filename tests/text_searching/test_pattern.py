@@ -2,8 +2,8 @@ from json import load
 
 import pytest
 
-from pysmelt.text_searching.pattern import Pattern
-from pysmelt.text_searching.element import Element
+from smelt_py.text_searching.pattern import Pattern
+from smelt_py.text_searching.element import Element
 
 
 @pytest.fixture(scope="module")

@@ -1,4 +1,4 @@
-from pysmelt.output_rules.literal import Literal
+from smelt_py.output_rules.literal import Literal
 
 import pytest
 

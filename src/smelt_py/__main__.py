@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 # from functools import reduce
 
 parser = ArgumentParser(
-    prog="pysmelt",
+    prog="smelt_py",
     description="Work with data about Early Literacy downloaded from Panorama"
 )
 

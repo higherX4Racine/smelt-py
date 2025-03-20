@@ -7,10 +7,10 @@ from os import path
 
 import polars as pl
 
-from pysmelt import HeadingParser
+from smelt_py import HeadingParser
 
 SEPARATOR = r"[\s:]"
-HEADING_PATH = files("pysmelt").joinpath("data", "panorama_headings.json")
+HEADING_PATH = files("smelt_py").joinpath("data", "panorama_headings.json")
 with HEADING_PATH.open("r") as fh:
     raw_rules = json_load(fh)
 

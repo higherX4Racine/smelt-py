@@ -1,4 +1,4 @@
-from pysmelt.output_rules.passthrough import Passthrough
+from smelt_py.output_rules.passthrough import Passthrough
 
 import pytest
 

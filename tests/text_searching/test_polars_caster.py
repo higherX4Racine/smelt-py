@@ -12,7 +12,7 @@ from polars import (
 
 import pytest
 
-from pysmelt.text_searching import (
+from smelt_py.text_searching import (
     Capture,
     Element,
     Pattern,

@@ -1,6 +1,6 @@
 import pytest
 
-from pysmelt.output_rules.lookup import Lookup
+from smelt_py.output_rules.lookup import Lookup
 
 
 @pytest.fixture(scope="module")

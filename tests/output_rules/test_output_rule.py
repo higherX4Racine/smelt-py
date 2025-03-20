@@ -1,4 +1,4 @@
-from pysmelt.output_rules.output_rule import OutputRule
+from smelt_py.output_rules.output_rule import OutputRule
 
 import pytest
 

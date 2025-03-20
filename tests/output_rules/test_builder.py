@@ -1,6 +1,6 @@
 import pytest
 
-from pysmelt.output_rules import OutputRuleBuilder
+from smelt_py.output_rules import OutputRuleBuilder
 
 
 @pytest.mark.parametrize("method", [
