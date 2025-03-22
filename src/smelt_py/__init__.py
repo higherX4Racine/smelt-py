@@ -1,11 +1,6 @@
 # Copyright (C) 2025 by Higher Expectations for Racine County
 r"""Work with data about Early Literacy downloaded from Panorama"""
 
-from .matching import (
-    Capture,
-    Element,
-    Pattern,
-)
 from .parsing import (
     HeadingTracker,
     PrimaryKeyPlan,

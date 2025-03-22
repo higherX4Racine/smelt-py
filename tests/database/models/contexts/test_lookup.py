@@ -15,20 +15,28 @@ def test_vanilla_lookup():
 
 def test_custom_lookup():
 
-    CustomLookup = LookupContext.make_subclass(
-        "CustomLookup",
-        "field",
-        {
+    class CustomLookup(LookupContext):
+        _field_names = ["field", "count"]
+        _name_field = "field"
+        _mapping = {
             "foo": int,
             "bar": float,
             "baz": bool
-        },
-        [("field", str), ("count", int)]
-    )
+        }
+        def __init__(self, field: str, count: int, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.field = field
+            self.count = count
 
-    hello = CustomLookup(field="foo", count=42)
+    hello = CustomLookup(field="foo", count=42, context_id=b"1")
     assert hello.output_name == "foo"
     assert hello.output_type == int
-    world = CustomLookup(field="baz", count=99)
+    assert hello.as_tuple() == (b"1", "foo", 42)
+    world = CustomLookup("baz", 99, b"2")
     assert world.output_name == "baz"
     assert world.output_type == bool
+    assert world.as_dict() == {
+        "context_id": b"2",
+        "field": "baz",
+        "count": 99
+    }

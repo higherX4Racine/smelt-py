@@ -1,13 +1,9 @@
 #  Copyright (C) 2025 by Higher Expectations for Racine County
 
-from dataclasses import dataclass, field, InitVar
-from typing import Self
-
 from ..keys import CompositeKey
+from .base import Base
 
-
-@dataclass
-class Measure[T]:
+class Measure[T](Base):
     r"""A single typed observation from a parsed table.
 
     Parameters
@@ -19,30 +15,33 @@ class Measure[T]:
     value: T
         A scalar observation
 
-    Attributes
-    ----------
-    measure_id: CompositeKey
-        The primary key of this item, concatenating `column_id` and `row`
-
     See Also
     --------
     Column
     """
-    value: T
-    column_id: InitVar[bytes]
-    row: InitVar[int]
-    measure_id: CompositeKey = field(init=False)
 
-    def __post_init__(self, column_id: bytes, row: int):
-        self.measure_id = CompositeKey(column_id, row)
+    _field_names = ["column_id", "row", "value"]
+
+    def __init__(self, column_id: bytes, row: int, value: T):
+        self._value = value
+        self._measure_id = CompositeKey(column_id, row)
+
+    @property
+    def value(self) -> T:
+        return self._value
+
+    @property
+    def measure_id(self) -> bytes:
+        r"""The primary key of this item, concatenating `column_id` and `row`"""
+        return self._measure_id.key
 
     @property
     def column_id(self) -> bytes:
-        return self.measure_id.unique_id
+        return self._measure_id.unique_id
 
     @property
     def row(self) -> int:
-        return self.measure_id.index
+        return self._measure_id.index
 
     def __eq__(self, other):
         return self.value == other.value
@@ -60,5 +59,5 @@ class Measure[T]:
         return not self < other
 
     @property
-    def type(self: Self) -> type:
+    def type(self) -> type:
         return type(self.value)

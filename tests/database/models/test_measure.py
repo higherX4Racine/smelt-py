@@ -33,12 +33,12 @@ class CustomObject:
     (CustomObject, CustomObject(0, 1), CustomObject(-1, -1))
 ])
 def test_measure(actual_type, lo, hi):
-    m_lo = Measure(lo, b"42", 0)
+    m_lo = Measure(b"42", 0, lo)
     assert m_lo.measure_id == b"42\x00\x00\x00\x00"
     assert m_lo.column_id == b"42"
     assert m_lo.row == 0
     assert m_lo.type == actual_type
-    m_hi = Measure(hi, b"99", 1)
+    m_hi = Measure(b"99", 1, hi)
     assert m_hi.measure_id == b"99\x00\x00\x00\x01"
     assert m_hi.column_id == b"99"
     assert m_hi.row == 1

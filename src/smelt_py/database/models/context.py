@@ -1,19 +1,34 @@
 #  Copyright (C) 2025 by Higher Expectations for Racine County
 
-from dataclasses import dataclass, field
+from typing import Any
 from ..keys import UniqueKey
+from .base import Base
 
 
-@dataclass
-class Context:
+class Context(Base):
     r"""Data extracted from the heading of a column.
 
-    Attributes
+    Parameters
     ----------
     context_id: bytes
-        The primary key of this item.
+        The primary key of this item, optional. Defaults to `uuid.uuid4()`
     """
-    context_id: UniqueKey = field(default_factory=UniqueKey.new, kw_only=True)
+
+    def __init__(self, context_id: bytes = None):
+        self._context_id = context_id if \
+            context_id is not None else \
+            UniqueKey.new().key
+
+    @classmethod
+    def field_names(cls) -> list[str]:
+        if cls._field_names[0] != "context_id":
+            cls._field_names.insert(0, "context_id")
+        return super().field_names()
+
+    @property
+    def context_id(self) -> bytes:
+        r"""The primary key of this item."""
+        return self._context_id
 
     @property
     def output_name(self) -> str:
@@ -21,6 +36,6 @@ class Context:
         raise NotImplementedError
 
     @property
-    def output_type(self) -> type:
+    def output_type(self) -> Any:
         r"""The data type found in the column that this context is related to."""
         raise NotImplementedError
