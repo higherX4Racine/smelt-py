@@ -1,4 +1,4 @@
-# Copyright 2025 by Higher Expectation for Racine County
+#  Copyright (c) 2025 by Higher Expectations for Racine County
 
 from typing import Any
 
@@ -10,8 +10,7 @@ from polars import (
 
 from polars.datatypes import DataType
 
-from .capture import Capture, TypedCapture
-from .pattern import Pattern
+from ..matching import (Capture, Pattern)
 
 
 class PolarsCaster:
@@ -31,5 +30,5 @@ class PolarsCaster:
     def cast(self, capture: Capture) -> Any:
         return self._type_map[capture.name](capture.value)
 
-    def cast_captures(self, captures: list[Capture]) -> list[TypedCapture]:
-        return [TypedCapture(c.name, self.cast(c)) for c in captures]
+    def cast_captures(self, captures: list[Capture]) -> list[Capture]:
+        return [Capture(c.name, self.cast(c)) for c in captures]

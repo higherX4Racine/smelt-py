@@ -5,10 +5,10 @@ import pytest
 from smelt_py.database.models import Context
 
 
-def test_context(mock_uuid):
-    first = Context()
+def test_context():
+    first = Context(b"1")
     assert first.context_id == b"1"
-    second = Context()
+    second = Context(b"2")
     assert second.context_id == b"2"
 
     with pytest.raises(NotImplementedError):

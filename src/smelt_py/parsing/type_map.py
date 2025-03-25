@@ -1,0 +1,38 @@
+#  Copyright (c) 2025 by Higher Expectations for Racine County
+
+from typing import Any
+
+from .converter import Converter
+
+
+class TypeMap:
+    r"""Syntactic sugar for a string-keyed dictionary of parsing functions
+
+    Parameters
+    ----------
+    kwargs: Converter
+        string-keyed functors that convert a string input to another type.
+    """
+
+    def __init__(self, **kwargs: Converter):
+        self._map = kwargs
+
+    def __call__(self, key: str, value: str) -> Any:
+        r"""Convert a string value to a new type.
+
+        Parameters
+        ----------
+        key: str
+            Signifies which type the string should be parsed as.
+        value: str
+            A literal string that can be parsed as a new value type.
+
+        Returns
+        -------
+        Any: the exact return type depends upon the `TypeMap`.
+        """
+        return self._map[key](value)
+
+    def type(self, key: str) -> Any:
+        r"""The type returned by the `Callable` mapped to `key`."""
+        return self._map[key].type

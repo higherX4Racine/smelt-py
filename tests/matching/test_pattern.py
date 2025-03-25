@@ -9,9 +9,9 @@ from smelt_py.matching.element import Element
 @pytest.fixture(scope="module")
 def elements() -> list[Element]:
     return [
-        Element(name="foo", pattern=r"\d+", datatype="Int16"),
+        Element(name="foo", pattern=r"\d+"),
         Element(pattern="baz"),
-        Element(name="barf", pattern=r"ugh", required=False, datatype="String")
+        Element(name="barf", pattern=r"ugh", required=False)
     ]
 
 
@@ -23,7 +23,6 @@ def pattern(elements) -> Pattern:
 def test_pattern(pattern):
     assert len(pattern) == 2
     assert pattern.names == ["foo", "barf"]
-    assert pattern.schema == [("foo", "Int16"), ("barf", "String")]
 
 
 @pytest.fixture(scope="module")

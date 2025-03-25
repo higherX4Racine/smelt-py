@@ -15,13 +15,6 @@ def test_empty_pattern(pattern):
     assert "No empty patterns, please!" in str(e)
 
 
-@pytest.mark.parametrize("datatype", ["", None, ])
-def test_empty_datatype(datatype):
-    with pytest.raises(ValueError) as e:
-        Element("foo", name="bar", datatype=datatype)
-    assert "Named elements must have a datatype." in str(e)
-
-
 @pytest.mark.parametrize("pattern,result", [
     (r"foo?", "foo"),
     (r"oo?", "oo"),
@@ -30,7 +23,6 @@ def test_empty_datatype(datatype):
 ])
 def test_unnamed_required_patterns(pattern, result):
     e = Element(pattern=pattern)
-    assert e.datatype is None
     r = e.render()
     assert r == f"(?:{pattern})"
     m = search(r, "shear foolishness")
@@ -44,8 +36,7 @@ def test_unnamed_required_patterns(pattern, result):
     ("d", r"(useful)?ness", "ness"),
 ])
 def test_named_required_patterns(name, pattern, result):
-    e = Element(pattern=pattern, name=name, datatype="String")
-    assert e.datatype == "String"
+    e = Element(pattern=pattern, name=name)
     r = e.render()
     assert r == f"(?P<{name}>{pattern})"
     m = search(r, "shear foolishness")
@@ -59,7 +50,7 @@ def test_named_required_patterns(name, pattern, result):
     (None, False, r"(?:hi)?")
 ])
 def test_naming_and_requiring(name, required, rendering):
-    e = Element(pattern="hi", name=name, required=required, datatype="String")
+    e = Element(pattern="hi", name=name, required=required)
     assert e.is_required == required
     assert (not e.is_optional) == required
     assert e.should_discard == (not bool(name))
@@ -67,35 +58,34 @@ def test_naming_and_requiring(name, required, rendering):
     assert e.render() == rendering
 
 
-@pytest.mark.parametrize("pattern,value,datatype", [
-    (r"True|False", True, "Boolean"),
-    (r"[0-9.]+", 3.14159, "Float64"),
-    (r"\d+", 3, "Int16"),
-    (r"\w+$", "foosball", "String")
+@pytest.mark.parametrize("pattern,value", [
+    (r"True|False", True),
+    (r"[0-9.]+", 3.14159),
+    (r"\d+", 3),
+    (r"\w+$", "foosball")
 ])
-def test_parsing(pattern, value, datatype):
-    e = Element(name="foo", pattern=pattern, datatype=datatype)
+def test_parsing(pattern, value):
+    e = Element(name="foo", pattern=pattern)
     m = search(e.render(), "True3.14159 foosball")
     assert m["foo"] == str(value)
-    assert getattr(datatypes, e.datatype).to_python()(m['foo']) == value
 
 
 @pytest.mark.parametrize("json_string,should_be", [
     (
         r"""{"pattern": "NWEA MAP"}""",
-        Element(pattern=r"NWEA MAP", datatype="String")
+        Element(pattern=r"NWEA MAP")
     ),
     (
         r"""{"name": "ScoreType","pattern": "Growth","datatype": "String"}""",
-        Element(name="ScoreType", pattern=r"Growth", datatype="String")
+        Element(name="ScoreType", pattern=r"Growth")
     ),
     (
         r"""{"name": "Year","pattern": "\\b\\d+\\b","datatype": "Int16"}""",
-        Element(r"\b\d+\b", "Year", datatype="Int16")
+        Element(r"\b\d+\b", "Year")
     ),
     (
         r"""{"name": "Version","pattern": "V\\d","optional": true,"datatype": "String"}""",
-        Element(r"V\d", name="Version", required=False, datatype="String")
+        Element(r"V\d", name="Version", required=False)
     ),
 ])
 def test_element_from_json(json_string, should_be):
@@ -104,5 +94,3 @@ def test_element_from_json(json_string, should_be):
     assert element.should_discard == should_be.should_discard
     assert element.pattern == should_be.pattern
     assert element.is_required == should_be.is_required
-    assert element.datatype == should_be.datatype
-

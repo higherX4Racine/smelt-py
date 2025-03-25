@@ -14,10 +14,10 @@ from ..output_rules import (
     OutputRuleBuilder,
 )
 from ..matching import (
-    TypedCapture,
-    PolarsCaster,
+    Capture,
     Pattern
 )
+from .polars_caster import PolarsCaster
 
 
 class HeadingParser:
@@ -51,18 +51,18 @@ class HeadingParser:
             )
         return None, None, None
 
-    def find_or_add(self, typed_captures: list[TypedCapture]) -> tuple:
+    def find_or_add(self, typed_captures: list[Capture]) -> tuple:
         row = self.find_captures(typed_captures)
         if row.height == 0:
             row = self.make_row(typed_captures)
             self._headings.vstack(row, in_place=True)
         return row.row(0)
 
-    def find_captures(self, typed_captures: list[TypedCapture]) -> DataFrame:
+    def find_captures(self, typed_captures: list[Capture]) -> DataFrame:
         expressions = [col(k) == lit(v) for k, v in typed_captures]
         return self._headings.filter(*expressions)
 
-    def make_row(self, typed_captures: list[TypedCapture]) -> DataFrame:
+    def make_row(self, typed_captures: list[Capture]) -> DataFrame:
         return DataFrame([
             [self._pk_plan.create(), *(v for k, v in typed_captures)]
         ],

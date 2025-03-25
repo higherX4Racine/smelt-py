@@ -5,9 +5,9 @@ from datetime import datetime
 from smelt_py.database.models import Source
 
 
-def test_source_creation(mock_uuid):
+def test_source_creation():
     now = datetime.now()
-    source = Source("some file or another", now, b"42")
+    source = Source("some file or another", now, b"42", source_id=b"1")
     assert source.description == "some file or another"
     assert source.date == now
     assert source.context_id == b"42"

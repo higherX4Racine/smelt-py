@@ -10,13 +10,15 @@ class Column(Base):
 
     Parameters
     ----------
-    source_id: int
+    source_id: bytes
         A foreign key to a table of `Source` objects
     index: int
         Which column in the source, starting from zero, it came from
-    context_type: type
+    context_type: str
         The subclass of `Context` that holds data from this column's heading
-    measure_type: type
+    context_id: bytes
+        A foreign key to this column's entry in the `Context` databases.
+    measure_type: Any
         The datatype of the items in this column's cells.
 
     See Also
@@ -39,10 +41,10 @@ class Column(Base):
 
     @classmethod
     def field_names(cls) -> list[str]:
-        return super(cls).field_names() + [
+        return [
             "source_id",
             "index",
-            "context_type"
+            "context_type",
             "context_id",
             "measure_type"
         ]

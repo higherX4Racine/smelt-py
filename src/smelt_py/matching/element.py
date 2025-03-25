@@ -14,21 +14,16 @@ class Element:
         An optional name, which would mark the element as a capturing group.
     required: bool?
         ``True``, the default, if the pattern must match something.
-    datatype: str
-        The name for the kind of data stored in the captured value
     """
     pattern: str = ""
     name: str = None
     required: bool = True
-    datatype: str = None
 
     def __post_init__(self):
         if not bool(self.pattern):
             raise ValueError("No empty patterns, please!")
         if self.name is None:
             self.name = ""
-        if self.name != "" and not bool(self.datatype):
-            raise ValueError("Named elements must have a datatype.")
 
     @property
     def is_named(self) -> bool:
@@ -61,5 +56,4 @@ class Element:
             pattern=parsed_json["pattern"],
             name=parsed_json.get("name", ""),
             required=not parsed_json.get("optional", False),
-            datatype=parsed_json.get("datatype", "String")
         )

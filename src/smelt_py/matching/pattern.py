@@ -7,6 +7,7 @@ from re import compile, Match
 from .element import Element
 from .capture import Capture
 
+
 class Pattern:
     r"""One regular expression with typed captures
 
@@ -17,6 +18,7 @@ class Pattern:
     separator: str
         the pattern to delimit separate elements
     """
+
     def __init__(self, elements: list[Element], separator: str):
         self._elements = elements
         self._separator = separator
@@ -56,10 +58,6 @@ class Pattern:
 
     def extract(self, string: str) -> list[Capture]:
         return self.captures(self.search(string))
-
-    @property
-    def schema(self) -> list[tuple[str,str]]:
-        return [(e.name, e.datatype) for e in self._elements if e.is_named]
 
     @staticmethod
     def from_json(parsed_json: dict) -> "Pattern":

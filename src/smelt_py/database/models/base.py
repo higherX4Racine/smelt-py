@@ -1,7 +1,9 @@
 #  Copyright (c) 2025 by Higher Expectations for Racine County
 
-class Base:
+from typing import Any
 
+
+class Base:
     _field_names = []
 
     @classmethod
@@ -15,4 +17,9 @@ class Base:
         return {
             k: getattr(self, k) for
             k in self.field_names()
+        }
+
+    def schema(self) -> dict[str, Any]:
+        return {
+            k: type(getattr(self, k)) for k in self.field_names()
         }
