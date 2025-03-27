@@ -17,7 +17,7 @@ from smelt_py.matching import (
     Element,
     Pattern,
 )
-from smelt_py.parsing.polars_caster import PolarsCaster
+from smelt_py.polars.polars_caster import PolarsCaster
 
 
 @pytest.mark.skip

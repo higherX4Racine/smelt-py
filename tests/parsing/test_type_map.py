@@ -1,7 +1,10 @@
 #  Copyright (c) 2025 by Higher Expectations for Racine County
 
+from typing import Any
+
 import pytest
 
+from smelt_py.matching import Capture
 from smelt_py.parsing.type_map import TypeMap
 from smelt_py.parsing import Converter
 
@@ -36,3 +39,38 @@ def type_map(converters) -> TypeMap:
 def test_type_map(type_map, key, data_type, text, answer):
     assert type_map(key, text) == answer
     assert type_map.type(key) == data_type
+
+
+CAPTURES = [
+        Capture("life", "42"),
+        Capture("euler", "2.71828"),
+        Capture("pi", "3.14"),
+        Capture("maybe", "False"),
+        Capture("word", "to your momma!")
+    ]
+
+
+MAPPING = TypeMap(
+        life=Converter.for_built_in(int),
+        euler=Converter.for_built_in(float),
+        pi=Converter.for_built_in(float),
+        maybe=Converter.for_built_in(bool),
+        word=Converter.for_built_in(str)
+    )
+
+
+EXPECTED_VALUES = {
+    "life": 42,
+    "euler": 2.71828,
+    "pi": 3.14,
+    "maybe": False,
+    "word": "to your momma!"
+}
+
+
+def test_typed_captures():
+    assert MAPPING.typed_captures(CAPTURES) == EXPECTED_VALUES
+
+@pytest.mark.parametrize("capture", CAPTURES)
+def test_casting_captures(capture):
+    assert MAPPING.cast(capture) == (capture.name, EXPECTED_VALUES[capture.name])

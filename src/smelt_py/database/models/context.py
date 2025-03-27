@@ -21,7 +21,7 @@ class Context(Base):
 
     @classmethod
     def field_names(cls) -> list[str]:
-        if cls._field_names[0] != "context_id":
+        if "context_id" not in cls._field_names:
             cls._field_names.insert(0, "context_id")
         return super().field_names()
 

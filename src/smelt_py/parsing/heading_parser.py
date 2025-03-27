@@ -17,7 +17,7 @@ from ..matching import (
     Capture,
     Pattern
 )
-from .polars_caster import PolarsCaster
+from ..polars.polars_caster import PolarsCaster
 
 
 class HeadingParser:

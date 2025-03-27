@@ -3,6 +3,7 @@
 from typing import Any
 
 from .converter import Converter
+from ..matching import Capture
 
 
 class TypeMap:
@@ -33,6 +34,17 @@ class TypeMap:
         """
         return self._map[key](value)
 
+    def cast(self, capture: Capture) -> tuple[str, Any]:
+        r"""Convert the `value` of a capture object according to its name."""
+        return capture.name, self.__call__(capture.name, capture.value)
+
     def type(self, key: str) -> Any:
         r"""The type returned by the `Callable` mapped to `key`."""
         return self._map[key].type
+
+    def typed_captures(self, captures: list[Capture]) -> dict[str, Any]:
+        return {
+            name: self.__call__(name, value) for
+            name, value in
+            captures
+        }

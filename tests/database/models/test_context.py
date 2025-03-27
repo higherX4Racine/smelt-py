@@ -5,29 +5,25 @@ import pytest
 from smelt_py.database.models import Context
 
 
-def test_context():
-    first = Context(b"1")
-    assert first.context_id == b"1"
-    second = Context(b"2")
-    assert second.context_id == b"2"
-
+@pytest.mark.parametrize("uid", [
+    b"1",
+    b"42",
+    b"3.14"
+])
+def test_context(uid):
+    context = Context(uid)
+    assert context.context_id == uid
     with pytest.raises(NotImplementedError):
-        first.output_name
+        context.output_name
 
-    with pytest.raises(NotImplementedError):
-        second.output_type
-
-    with pytest.raises(IndexError):
-        first.as_tuple()
-
-    with pytest.raises(IndexError):
-        first.as_dict()
+    assert context.as_tuple() == (uid,)
+    assert context.as_dict() == {"context_id": uid}
 
 
 def test_data_tuples():
-
     class Temp(Context):
         _field_names = ["name", "number"]
+
         def __init__(self, name: str, number: int, *args, **kwargs):
             super().__init__(*args, **kwargs)
             self.name = name
