@@ -15,7 +15,8 @@ def test_context(uid):
     assert context.context_id == uid
     with pytest.raises(NotImplementedError):
         context.output_name
-
+    with pytest.raises(NotImplementedError):
+        context.output_type
     assert context.as_tuple() == (uid,)
     assert context.as_dict() == {"context_id": uid}
 
