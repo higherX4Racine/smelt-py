@@ -10,7 +10,7 @@ from polars import (
 
 from polars.datatypes import DataType
 
-from ..matching import (Capture, Pattern)
+from ..capture import Capture
 
 
 class PolarsCaster:
@@ -22,10 +22,6 @@ class PolarsCaster:
     def polars_type(type_name: str, default_type: DataType = None) -> DataType:
         default_type = default_type or String
         return getattr(datatypes, type_name, default_type)
-
-    @classmethod
-    def to_polars_schema(cls, pattern: Pattern, default_type: DataType = None) -> Schema:
-        return Schema({k: cls.polars_type(v, default_type) for k, v in pattern.schema})
 
     def cast(self, capture: Capture) -> Any:
         return self._type_map[capture.name](capture.value)

@@ -12,15 +12,14 @@ from polars import (
 
 import pytest
 
-from smelt_py.matching import (
+from smelt_py.polars.polars_caster import (
     Capture,
-    Element,
-    Pattern,
+    PolarsCaster,
 )
-from smelt_py.polars.polars_caster import PolarsCaster
+
+from smelt_py import Element, TypeMap
 
 
-@pytest.mark.skip
 @pytest.mark.parametrize("polars_type", [
     Binary,
     Boolean,
@@ -33,8 +32,7 @@ def test_to_polars(polars_type):
     assert PolarsCaster.polars_type(polars_type.__name__) == polars_type
 
 
-@pytest.mark.skip
-@pytest.mark.parametrize("default_type,should_be",[
+@pytest.mark.parametrize("default_type,should_be", [
     (None, String),
     (Float64, Float64),
     (Int8, Int8),
@@ -45,37 +43,23 @@ def test_default_type(default_type, should_be):
 
 
 @pytest.fixture(scope="module")
-def pattern() -> Pattern:
-    return Pattern(
-        [
-            Element(r"-?\d+", "number"),
-            Element(r"\w+", "greeting"),
-            Element(r"[,.;:]", required=False),
-            Element(r"\w+", "subject"),
-            Element(r"[.!?]", required=False)
-        ],
-        r"\s"
+def type_map() -> TypeMap:
+    return TypeMap(
+        number=Int8.to_python,
+        greeting=String.to_python,
+        subject=String.to_python
     )
 
-@pytest.mark.skip
-def test_to_polars_schema(pattern):
-    assert PolarsCaster.to_polars_schema(pattern) == Schema({
-        "number": Int8,
-        "greeting": String,
-        "subject": String,
-    })
 
-
-@pytest.mark.skip
 @pytest.mark.parametrize("literals", [
     [0, "Yo", "dude"],
     [-1, "Hello", "world"],
     [42, "Hi", "Mom"],
     [99, "Who", "dat"],
 ])
-def test_casting(pattern, literals):
-    captures = [Capture(k, str(v)) for k, v in zip(pattern.names, literals)]
-    schema = PolarsCaster.to_polars_schema(pattern)
+def test_casting(type_map, literals):
+    captures = [Capture(k, str(v)) for k, v in zip(type_map.names, literals)]
+    schema = PolarsCaster.to_polars_schema(type_map)
     caster = PolarsCaster(schema)
     typed_captures = caster.cast_captures(captures)
     for actually_is, should_be in zip(typed_captures, literals):

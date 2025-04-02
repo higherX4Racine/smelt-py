@@ -9,7 +9,7 @@ from polars import (
     DataFrame,
 )
 
-from ..database.models import BaseModel
+from smelt_py.models import BaseModel
 
 
 def as_filter_expressions(criteria: dict[str, Any],
