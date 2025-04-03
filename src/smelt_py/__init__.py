@@ -2,9 +2,10 @@
 r"""Work with data about Early Literacy downloaded from Panorama"""
 
 from .capture import Capture
-from .element import Element
-from .pattern import Pattern
 from .converter import Converter
+from .element import Element
+from .parser import Parser
+from .pattern import Pattern
 from .type_map import TypeMap
 from .types import (
     Month as MonthConverter,

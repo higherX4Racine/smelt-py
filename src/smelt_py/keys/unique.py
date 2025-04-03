@@ -1,5 +1,6 @@
 #  Copyright (C) 2025 by Higher Expectations for Racine County
 
+from typing import Self
 from uuid import uuid4
 
 from .primary_key import PrimaryKey
@@ -24,5 +25,5 @@ class Unique(PrimaryKey):
         return self._buffer
 
     @classmethod
-    def new(cls) -> "Unique":
+    def new(cls) -> Self:
         return cls(uuid4().bytes)

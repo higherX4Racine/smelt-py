@@ -48,3 +48,8 @@ class TypeMap:
             name, value in
             captures
         }
+
+    @property
+    def keys(self) -> set[str]:
+        r"""The keys that the instance uses to cast strings to typed objects"""
+        return set(self._map.keys())

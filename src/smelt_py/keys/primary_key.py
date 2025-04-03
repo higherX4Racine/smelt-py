@@ -2,6 +2,7 @@
 
 class PrimaryKey:
     r"""Abstract base class for tracking unique rows in tables"""
+
     @property
     def key(self) -> bytes:
         r"""A bytes buffer representing a unique row in a table"""

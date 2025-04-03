@@ -32,7 +32,7 @@ def rendered_pattern() -> str:
 
 
 def test_rendering(pattern, rendered_pattern):
-    assert pattern._re.type_map == rendered_pattern
+    assert pattern.render() == rendered_pattern
 
 
 @pytest.mark.parametrize("string,match,captures", [

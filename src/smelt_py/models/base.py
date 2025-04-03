@@ -1,25 +1,22 @@
 #  Copyright (c) 2025 by Higher Expectations for Racine County
 
+from dataclasses import dataclass, fields, asdict, astuple
 from typing import Any
 
 
+@dataclass
 class Base:
-    _field_names = []
 
     @classmethod
     def field_names(cls) -> list[str]:
-        return cls._field_names
+        return [f.name for f in fields(cls)]
+
+    @classmethod
+    def schema(cls) -> dict[str, Any]:
+        return {f.name: f.type for f in fields(cls)}
 
     def as_tuple(self) -> tuple:
-        return tuple(getattr(self, k) for k in self.field_names())
+        return astuple(self)
 
-    def as_dict(self) -> dict:
-        return {
-            k: getattr(self, k) for
-            k in self.field_names()
-        }
-
-    def schema(self) -> dict[str, Any]:
-        return {
-            k: type(getattr(self, k)) for k in self.field_names()
-        }
+    def as_dict(self) -> dict[str, Any]:
+        return asdict(self)

@@ -26,6 +26,10 @@ def type_map(converters) -> TypeMap:
     return TypeMap(**converters)
 
 
+def test_type_map_keys(type_map):
+    assert type_map.keys == {"bool", "int", "float", "str"}
+
+
 @pytest.mark.parametrize("key,data_type,text,answer", [
     ("bool", bool, "True", True),
     ("bool", bool, "False", False),
@@ -36,7 +40,7 @@ def type_map(converters) -> TypeMap:
     ("str", str, "howdy", "howdy"),
     ("str", str, "", "")
 ])
-def test_type_map(type_map, key, data_type, text, answer):
+def test_casting_items(type_map, key, data_type, text, answer):
     assert type_map(key, text) == answer
     assert type_map.type(key) == data_type
 
