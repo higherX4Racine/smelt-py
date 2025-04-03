@@ -1,22 +1,18 @@
 #  Copyright (C) 2025 by Higher Expectations for Racine County
 
+from dataclasses import dataclass
 import pytest
-
 from smelt_py.keys.primary_key import PrimaryKey
 
 
-def test_base_primary_key():
-    with (pytest.raises(NotImplementedError)):
-        _ = PrimaryKey().key
-
-
+@dataclass(order=True)
 class StubKey(PrimaryKey):
-    def __init__(self, x: int):
-        self._key = b"%d" % x
+    key: PrimaryKey = PrimaryKey()
 
-    @property
-    def key(self) -> bytes:
-        return self._key
+
+def test_bad_initialization_of_key():
+    with pytest.raises(ValueError) as err:
+        StubKey(key=3.14)
 
 
 def test_stub_key():
@@ -27,11 +23,11 @@ def test_stub_key():
     assert a == a
     assert b >= a
 
-    assert a == b"1"
-    assert b == b"2"
+    assert b.key == b"2"
+    assert a.key == b"1"
 
-    assert a <= b"99"
-    assert b >= b"-99"
+    assert a.key <= b"99"
+    assert b.key >= b"-99"
 
-    assert repr(a) == "b'1'"
-    assert repr(b) == "b'2'"
+    assert repr(a.key) == "b'1'"
+    assert repr(b.key) == "b'2'"

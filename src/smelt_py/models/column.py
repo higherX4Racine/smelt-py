@@ -1,43 +1,21 @@
 #  Copyright (C) 2025 by Higher Expectations for Racine County
 
+from dataclasses import dataclass, field, InitVar
 from typing import Any
 from ..keys import CompositeKey
 from .base import Base
 
 
+@dataclass
 class Column(Base):
-    r"""One observed column from a Panorama data source
-
-    Parameters
-    ----------
-    source_id: bytes
-        A foreign key to a table of `Source` objects
-    index: int
-        Which column in the source, starting from zero, it came from
+    source_id: InitVar[bytes] = field(init=False)
+    index: InitVar[int] = field(init=False)
     context_type: str
-        The subclass of `Context` that holds data from this column's heading
     context_id: bytes
-        A foreign key to this column's entry in the `Context` databases.
-    measure_type: Any
-        The datatype of the items in this column's cells.
+    measure_type: type
 
-    See Also
-    --------
-    CompositeKey
-    Context
-    Source
-    """
-
-    def __init__(self,
-                 source_id: bytes,
-                 index: int,
-                 context_type: str,
-                 context_id: bytes,
-                 measure_type: Any):
+    def __post_init__(self, source_id: bytes, index: int):
         self._column_key = CompositeKey(source_id, index)
-        self._context_type = context_type
-        self._context_id = context_id
-        self._measure_type = measure_type
 
     @classmethod
     def field_names(cls) -> list[str]:
@@ -61,15 +39,3 @@ class Column(Base):
     @property
     def index(self) -> int:
         return self._column_key.index
-
-    @property
-    def context_type(self) -> str:
-        return self._context_type
-
-    @property
-    def context_id(self) -> bytes:
-        return self._context_id
-
-    @property
-    def measure_type(self) -> Any:
-        return self._measure_type

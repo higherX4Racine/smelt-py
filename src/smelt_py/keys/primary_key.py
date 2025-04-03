@@ -1,33 +1,21 @@
 #  Copyright (C) 2025 by Higher Expectations for Racine County
 
 class PrimaryKey:
-    r"""Abstract base class for tracking unique rows in tables"""
+    r"""Descriptor object for tracking unique rows in tables"""
 
-    @property
-    def key(self) -> bytes:
-        r"""A bytes buffer representing a unique row in a table"""
-        raise NotImplementedError
+    def __set_name__(self, owner, name):
+        self._name = "_" + name
 
-    def __eq__(self, other):
-        return self.key == other if \
-            isinstance(other, bytes) else \
-            self.key == other.key
+    def __get__(self, instance, owner=None) -> bytes:
+        return getattr(instance, self._name)
 
-    def __lt__(self, other):
-        return self.key < other if \
-            isinstance(other, bytes) else \
-            self.key < other.key
-
-    def __le__(self, other):
-        return not self > other
-
-    def __gt__(self, other):
-        return self.key > other if \
-            isinstance(other, bytes) else \
-            self.key > other.key
-
-    def __ge__(self, other):
-        return not self < other
-
-    def __repr__(self):
-        return repr(self.key)
+    def __set__(self, instance, value: bytes | int | str):
+        if isinstance(value, bytes):
+            pass
+        elif isinstance(value, int):
+            value = b"%d" % value
+        elif isinstance(value, str):
+            value = value.encode()
+        else:
+            raise ValueError("the primary key must be a `bytes`, `int`, or `str`")
+        setattr(instance, self._name, value)
