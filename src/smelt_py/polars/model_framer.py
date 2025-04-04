@@ -1,21 +1,35 @@
 #  Copyright (c) 2025 by Higher Expectations for Racine County
 
-from typing import Any, ClassVar
-from polars import DataFrame, Schema, col, Binary, Object, String
+from typing import Any, Type
+
+from polars import (
+    Binary,
+    col,
+    DataFrame,
+    Object,
+    Schema,
+    String,
+)
+
 from .utilities import as_filter_expressions
 
 
-class ModelFrame[T]:
+class ModelFramer[T]:
     r"""base class that wraps a polars DataFrame with some other behavior."""
 
-    ModelClass: ClassVar[type] = T
-
-    def __init__(self, prototype: T):
-        self._frame = DataFrame(schema=prototype.schema())
+    def __init__(self, builder: Type[T], schema: Schema | dict):
+        self._builder = builder
+        self._frame = DataFrame(schema=schema)
 
     @property
     def frame(self) -> DataFrame:
         return self._frame
+
+    def __getitem__(self, item: int) -> T:
+        return self.as_instance(**self.frame.row(index=item, named=True))
+
+    def as_instance(self, **kwargs: dict[str,Any]) -> T:
+        return self._builder(**kwargs)
 
     def as_row(self, model_item: T) -> DataFrame:
         return DataFrame([model_item.as_tuple()],
@@ -35,8 +49,8 @@ class ModelFrame[T]:
         row_frame = self._frame.filter(*expr)
         if row_frame.height > 0:
             typed_captures = row_frame.row(0, named=True)
-        context = self.ModelClass(**typed_captures)
+        instance = self.as_instance(**typed_captures)
         if row_frame.height == 0:
-            row_frame = self.as_row(context)
+            row_frame = self.as_row(instance)
             self._frame.vstack(row_frame, in_place=True)
-        return context
+        return instance

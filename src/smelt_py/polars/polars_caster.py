@@ -10,7 +10,7 @@ from polars import (
 
 from polars.datatypes import DataType
 
-from ..capture import Capture
+from smelt_py.parsing.capture import Capture
 
 
 class PolarsCaster:

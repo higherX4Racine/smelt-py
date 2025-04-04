@@ -1,5 +1,6 @@
 #  Copyright (c) 2025 by Higher Expectations for Racine County
 
+from dataclasses import dataclass, KW_ONLY
 import pytest
 
 from smelt_py.models.context import Context
@@ -14,22 +15,21 @@ def test_context(uid):
     context = Context(uid)
     assert context.context_id == uid
     with pytest.raises(NotImplementedError):
-        context.output_name
+        _ = context.output_name
     with pytest.raises(NotImplementedError):
-        context.output_type
+        _ = context.output_type
     assert context.as_tuple() == (uid,)
     assert context.as_dict() == {"context_id": uid}
+    assert context.primary_key == uid
 
 
 def test_data_tuples():
+    @dataclass
     class Temp(Context):
-        _field_names = ["name", "number"]
+        name: str = None
+        number: int = None
 
-        def __init__(self, name: str, number: int, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.name = name
-            self.number = number
-
-    temp = Temp("hi", 42, b"1")
+    temp = Temp(b"1", "hi", 42)
     assert temp.as_tuple() == (b"1", "hi", 42)
     assert temp.as_dict() == dict(context_id=b"1", name='hi', number=42)
+    assert temp.primary_key == b"1"

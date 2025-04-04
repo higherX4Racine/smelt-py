@@ -2,7 +2,7 @@
 
 import pytest
 
-from smelt_py.converter import Converter
+from smelt_py.parsing.converter import Converter
 
 
 @pytest.mark.parametrize("datatype,example,text,answer", [

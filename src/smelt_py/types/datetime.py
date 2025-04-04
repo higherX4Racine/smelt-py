@@ -1,7 +1,7 @@
 #  Copyright (c) 2025 by Higher Expectations for Racine County
 
 from datetime import datetime
-from ..converter import Converter
+from smelt_py.parsing.converter import Converter
 
 
 class DateTime(Converter):

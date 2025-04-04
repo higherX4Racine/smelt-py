@@ -1,41 +1,41 @@
 #  Copyright (C) 2025 by Higher Expectations for Racine County
 
-from dataclasses import dataclass, field, InitVar
-from typing import Any
-from ..keys import CompositeKey
+from dataclasses import dataclass
+from struct import pack
+
 from .base import Base
 
 
 @dataclass
 class Column(Base):
-    source_id: InitVar[bytes] = field(init=False)
-    index: InitVar[int] = field(init=False)
-    context_type: str
+    r"""A dataclass for keeping track of actual columns encountered in a data set
+
+    Parameters
+    ----------
+    source_id: bytes
+        The unique identifier of the column's data source, probably a spreadsheet
+    index: int
+        The zero-indexed column number in the source
+    context_label: str
+        The table of Context subclasses that this column's heading belongs to
+    context_id: bytes
+        The unique identifier of this column's specific Context subclass instance.
+    measure_type: type
+        The data type of this column's values.
+
+    See Also
+    --------
+    Context
+    Measure
+    """
+    source_id: bytes
+    index: int
+    context_label: str
     context_id: bytes
     measure_type: type
 
-    def __post_init__(self, source_id: bytes, index: int):
-        self._column_key = CompositeKey(source_id, index)
-
-    @classmethod
-    def field_names(cls) -> list[str]:
-        return [
-            "source_id",
-            "index",
-            "context_type",
-            "context_id",
-            "measure_type"
-        ]
-
     @property
-    def column_id(self) -> bytes:
-        r"""The primary key for this item, concatenating `source_id` and `index`"""
-        return self._column_key.key
-
-    @property
-    def source_id(self) -> bytes:
-        return self._column_key.unique_id
-
-    @property
-    def index(self) -> int:
-        return self._column_key.index
+    def primary_key(self) -> bytes:
+        return pack(f">{len(self.source_id)}sI",
+                    self.source_id,
+                    self.index)

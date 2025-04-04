@@ -6,10 +6,7 @@ from polars import (
     col,
     lit,
     Expr,
-    DataFrame,
 )
-
-from smelt_py.models import BaseModel
 
 
 def as_filter_expressions(criteria: dict[str, Any],
@@ -18,8 +15,3 @@ def as_filter_expressions(criteria: dict[str, Any],
         fields = criteria.keys()
     return [col(n) == lit(criteria[n]) for n in fields]
 
-
-def as_row(model_item: BaseModel, template_frame: DataFrame) -> DataFrame:
-    return DataFrame([model_item.as_tuple()],
-                     schema=template_frame.schema,
-                     orient="row")

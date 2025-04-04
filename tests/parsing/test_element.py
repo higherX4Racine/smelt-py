@@ -5,7 +5,7 @@ from re import search
 
 import pytest
 
-from smelt_py.element import Element
+from smelt_py.parsing.element import Element
 
 
 @pytest.mark.parametrize("pattern", ["", None, ])

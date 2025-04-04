@@ -1,19 +1,27 @@
 #  Copyright (c) 2025 by Higher Expectations for Racine County
 
-from polars import Binary, Int64, String, Object
+from polars import (
+    Binary,
+    Int64,
+    Object,
+    Schema,
+    String,
+)
+
 from ..models import Column, Context
-from .model_frame import Frame
+from .model_framer import ModelFramer
 
 
-class Columns(Frame):
+class ColumnFramer(ModelFramer):
     def __init__(self):
-        super().__init__({
-            'source_id': Binary,
-            'index': Int64,
-            'context_type': String,
-            'context_id': Binary,
-            'measure_type': Object
-        })
+        super().__init__(Column,
+                         Schema({
+                             'source_id': Binary,
+                             'index': Int64,
+                             'context_label': String,
+                             'context_id': Binary,
+                             'measure_type': Object
+                         }))
 
     def add_column(self,
                    source_context: Context,

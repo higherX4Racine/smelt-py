@@ -4,7 +4,7 @@ from importlib.resources import files
 from json import load as json_load
 import re
 
-from ..converter import Converter
+from smelt_py.parsing.converter import Converter
 
 
 class Month(Converter):

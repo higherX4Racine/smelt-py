@@ -17,7 +17,7 @@ from smelt_py.polars.polars_caster import (
     PolarsCaster,
 )
 
-from smelt_py import TypeMap
+from smelt_py.parsing import TypeMap
 
 @pytest.mark.skip
 @pytest.mark.parametrize("polars_type", [

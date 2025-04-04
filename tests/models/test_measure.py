@@ -25,24 +25,23 @@ class CustomObject:
         return self.magnitude > other.magnitude
 
 
-@pytest.mark.parametrize("actual_type,lo,hi", [
-    (bool, False, True),
-    (int, -1, 42),
-    (float, 2.71828, 3.14159),
-    (str, "a", "z"),
-    (CustomObject, CustomObject(0, 1), CustomObject(-1, -1))
+@pytest.mark.parametrize("lo,hi", [
+    (False, True),
+    (-1, 42),
+    (2.71828, 3.14159),
+    ("a", "z"),
+    (CustomObject(0, 1), CustomObject(-1, -1))
 ])
-def test_measure(actual_type, lo, hi):
+def test_measure(lo, hi):
     m_lo = Measure(b"42", 0, lo)
-    assert m_lo.measure_id == b"42\x00\x00\x00\x00"
+    assert m_lo.primary_key == b"42\x00\x00\x00\x00"
     assert m_lo.column_id == b"42"
     assert m_lo.row == 0
-    assert m_lo.type == actual_type
+
     m_hi = Measure(b"99", 1, hi)
-    assert m_hi.measure_id == b"99\x00\x00\x00\x01"
+    assert m_hi.primary_key == b"99\x00\x00\x00\x01"
     assert m_hi.column_id == b"99"
     assert m_hi.row == 1
-    assert m_hi.type == actual_type
 
     assert m_lo == m_lo
     assert m_hi == m_hi

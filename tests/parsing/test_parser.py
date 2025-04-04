@@ -4,8 +4,8 @@ from typing import Any
 
 import pytest
 
-from smelt_py.parser import Parser, Pattern, TypeMap
-from smelt_py import Element, Converter
+from smelt_py.parsing.parser import Parser, Pattern, TypeMap
+from smelt_py.parsing import Element, Converter
 
 
 @pytest.fixture
@@ -48,3 +48,9 @@ def test_parsing(elements, pairs, text, number, anything, quantity):
     assert captures["number"] == number
     assert captures["anything"] == anything
     assert captures["quantity"] == quantity
+
+
+def test_no_match(pairs, elements):
+    p = Parser(mapping=TypeMap(**pairs),
+               pattern = Pattern(elements, r"\s"))
+    assert p("") is None

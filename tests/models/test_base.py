@@ -1,6 +1,7 @@
 #  Copyright (c) 2025 by Higher Expectations for Racine County
-
-from smelt_py.models.base import Base, dataclass
+from dataclasses import dataclass
+import pytest
+from smelt_py.models.base import Base
 
 
 def test_base_schema():
@@ -16,3 +17,6 @@ def test_base_schema():
     assert example.field_names() == ["foo", "bar", "baz"]
     assert example.as_dict() == {"foo": "pi", "bar": 3.14, "baz": 3}
     assert example.as_tuple() == ("pi", 3.14, 3)
+
+    with pytest.raises(NotImplementedError):
+        _ = example.primary_key

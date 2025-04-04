@@ -1,8 +1,12 @@
 #  Copyright (C) 2025 by Higher Expectations for Racine County
 
-from ..keys import CompositeKey
+from dataclasses import dataclass
+from struct import pack
+
 from .base import Base
 
+
+@dataclass
 class Measure[T](Base):
     r"""A single typed observation from a parsed table.
 
@@ -19,29 +23,15 @@ class Measure[T](Base):
     --------
     Column
     """
-
-    _field_names = ["column_id", "row", "value"]
-
-    def __init__(self, column_id: bytes, row: int, value: T):
-        self._value = value
-        self._measure_id = CompositeKey(column_id, row)
+    column_id: bytes
+    row: int
+    value: T
 
     @property
-    def value(self) -> T:
-        return self._value
-
-    @property
-    def measure_id(self) -> bytes:
-        r"""The primary key of this item, concatenating `column_id` and `row`"""
-        return self._measure_id.key
-
-    @property
-    def column_id(self) -> bytes:
-        return self._measure_id.unique_id
-
-    @property
-    def row(self) -> int:
-        return self._measure_id.index
+    def primary_key(self) -> bytes:
+        return pack(f">{len(self.column_id)}sI",
+                    self.column_id,
+                    self.row)
 
     def __eq__(self, other):
         return self.value == other.value
@@ -57,7 +47,3 @@ class Measure[T](Base):
 
     def __ge__(self, other):
         return not self < other
-
-    @property
-    def type(self) -> type:
-        return type(self.value)

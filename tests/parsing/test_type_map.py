@@ -2,7 +2,7 @@
 
 import pytest
 
-from smelt_py.type_map import (
+from smelt_py.parsing.type_map import (
     Capture,
     Converter,
     TypeMap,
