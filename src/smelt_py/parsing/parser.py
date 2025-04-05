@@ -16,5 +16,5 @@ class Parser:
     def __call__(self, text: str) -> dict[str, Any] | None:
         captures = self._pattern.extract(text)
         if captures:
-            return self._mapping.typed_captures(captures)
+            return self._mapping.convert_captures(captures)
         return None

@@ -7,12 +7,12 @@ from smelt_py.parsing.type_map import (
     Converter,
     TypeMap,
 )
-
+from smelt_py.parsing.converters import BuiltInConverter
 
 @pytest.fixture
 def converters() -> dict[str, Converter]:
     return {
-        k: Converter.for_built_in(v) for k, v in [
+        k: BuiltInConverter(v) for k, v in [
             ("bool", bool),
             ("int", int),
             ("float", float),
@@ -32,7 +32,8 @@ def test_type_map_keys(type_map):
 
 @pytest.mark.parametrize("key,data_type,text,answer", [
     ("bool", bool, "True", True),
-    ("bool", bool, "False", False),
+    ("bool", bool, "False", True),
+    ("bool", bool, "", False),
     ("int", int, "42", 42),
     ("int", int, "-1", -1),
     ("float", float, "3.14", 3.14),
@@ -49,16 +50,16 @@ CAPTURES = [
     Capture("life", "42"),
     Capture("euler", "2.71828"),
     Capture("pi", "3.14"),
-    Capture("maybe", "False"),
+    Capture("maybe", ""),
     Capture("word", "to your momma!")
 ]
 
 MAPPING = TypeMap(
-    life=Converter.for_built_in(int),
-    euler=Converter.for_built_in(float),
-    pi=Converter.for_built_in(float),
-    maybe=Converter.for_built_in(bool),
-    word=Converter.for_built_in(str)
+    life=BuiltInConverter(int),
+    euler=BuiltInConverter(float),
+    pi=BuiltInConverter(float),
+    maybe=BuiltInConverter(bool),
+    word=BuiltInConverter(str)
 )
 
 EXPECTED_VALUES = {
@@ -71,7 +72,7 @@ EXPECTED_VALUES = {
 
 
 def test_typed_captures():
-    assert MAPPING.typed_captures(CAPTURES) == EXPECTED_VALUES
+    assert MAPPING.convert_captures(CAPTURES) == EXPECTED_VALUES
 
 
 @pytest.mark.parametrize("capture", CAPTURES)

@@ -2,12 +2,13 @@
 
 from importlib.resources import files
 from json import load as json_load
-import re
+from re import compile, Pattern as RePattern
+from typing import ClassVar
 
-from smelt_py.parsing.converter import Converter
 
+class Month:
+    MONTH_RE: ClassVar[RePattern] = compile(r"^\d+|[a-z]{3}")
 
-class Month(Converter):
     @staticmethod
     def three_letter_months(language: str):
         r"""TLAs for months in the specified language.
@@ -26,18 +27,20 @@ class Month(Converter):
         }
 
     def __init__(self, language: str):
-        super().__init__(self.lookup, 10)
         self._map = (
                 ONE_DIGIT_MONTHS |
                 TWO_DIGIT_MONTHS |
                 self.three_letter_months(language)
         )
 
-    def lookup(self, month_text: str) -> int:
-        matches = re.search(r"^\d+|[a-z]{3}",
-                            month_text.lower())
+    def __call__(self, text: str) -> int:
+        matches = self.MONTH_RE.search(text.lower())
         month = matches.group(0)
         return self._map.get(month, 127)
+
+    @property
+    def type(self) -> type:
+        return int
 
 
 ONE_DIGIT_MONTHS = {

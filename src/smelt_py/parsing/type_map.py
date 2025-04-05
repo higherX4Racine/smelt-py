@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from .converter import Converter
+from .converters import Converter
 from .capture import Capture
 
 
@@ -42,7 +42,7 @@ class TypeMap:
         r"""The type returned by the `Callable` mapped to `key`."""
         return self._map[key].type
 
-    def typed_captures(self, captures: list[Capture]) -> dict[str, Any]:
+    def convert_captures(self, captures: list[Capture]) -> dict[str, Any]:
         return {
             name: self.__call__(name, value) for
             name, value in

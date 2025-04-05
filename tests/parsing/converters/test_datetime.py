@@ -3,7 +3,7 @@
 from datetime import datetime
 import pytest
 
-from smelt_py.types.datetime import DateTime as DateTimeConverter
+from smelt_py.parsing.converters.datetime import DateTime
 
 
 @pytest.mark.parametrize("fmt,text,should_be",[
@@ -11,7 +11,6 @@ from smelt_py.types.datetime import DateTime as DateTimeConverter
     ("%Y%m%d%H%M%S", "20250211090206", datetime(2025, 2, 11, 9, 2, 6))
 ])
 def test_datetime_converter(fmt, text, should_be):
-    converter = DateTimeConverter(fmt)
-    assert converter.example == datetime(2025,3,15,11,12,13)
+    converter = DateTime(fmt)
     assert converter.type == datetime
     assert converter(text) == should_be

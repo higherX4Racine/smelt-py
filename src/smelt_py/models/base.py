@@ -14,7 +14,7 @@ class Base:
 
     @classmethod
     def schema(cls) -> dict[str, Any]:
-        """A mapping from the names of the instance's fields to their types."""
+        """A mapping from the names of the instance's fields to their converters."""
         return {f.name: f.type for f in fields(cls)}
 
     def as_tuple(self) -> tuple:

@@ -5,7 +5,8 @@ from typing import Any
 import pytest
 
 from smelt_py.parsing.parser import Parser, Pattern, TypeMap
-from smelt_py.parsing import Element, Converter
+from smelt_py.parsing import Element
+from smelt_py.parsing.converters import BuiltInConverter
 
 
 @pytest.fixture
@@ -19,9 +20,9 @@ def elements() -> list[Element]:
 
 @pytest.fixture()
 def pairs() -> dict[str, Any]:
-    return dict(number=Converter.for_built_in(int),
-                anything=Converter.for_built_in(str),
-                quantity=Converter.for_built_in(float))
+    return dict(number=BuiltInConverter(int),
+                anything=BuiltInConverter(str),
+                quantity=BuiltInConverter(float))
 
 
 def test_initialization(elements, pairs):
@@ -52,5 +53,5 @@ def test_parsing(elements, pairs, text, number, anything, quantity):
 
 def test_no_match(pairs, elements):
     p = Parser(mapping=TypeMap(**pairs),
-               pattern = Pattern(elements, r"\s"))
+               pattern=Pattern(elements, r"\s"))
     assert p("") is None

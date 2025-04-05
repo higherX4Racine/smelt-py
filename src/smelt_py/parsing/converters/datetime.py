@@ -1,10 +1,9 @@
 #  Copyright (c) 2025 by Higher Expectations for Racine County
 
 from datetime import datetime
-from smelt_py.parsing.converter import Converter
 
 
-class DateTime(Converter):
+class DateTime:
     r"""A converter for parsing datetime strings according to a fixed format.
 
     Parameters
@@ -17,11 +16,12 @@ class DateTime(Converter):
     """
 
     def __init__(self, fmt: str):
-        super().__init__(self.interpret,
-                         datetime(2025, 3, 15,
-                                  11, 12, 13))
         self._format = fmt
 
-    def interpret(self, formatted_date: str) -> datetime:
+    def __call__(self, text: str) -> datetime:
         r"""Convert the input text to a datetime object."""
-        return datetime.strptime(formatted_date, self._format)
+        return datetime.strptime(text, self._format)
+
+    @property
+    def type(self) -> type:
+        return datetime
