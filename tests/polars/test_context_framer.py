@@ -2,16 +2,16 @@
 
 from dataclasses import dataclass
 
-from polars import String, Int16, UInt8, Binary
+from polars import String, UInt8
 
 import pytest
 
-from smelt_py.models import LiteralContext, LookupContext
+from smelt_py.models import Context, LiteralOutput, LookupOutput
 from smelt_py.polars.context_framer import ContextFramer
 
 
 @dataclass
-class LiteralClass(LiteralContext):
+class LiteralClass(LiteralOutput, Context):
     name: str = None
     rank: int = None
     _name_field = "result"
@@ -40,7 +40,7 @@ def test_literal_framer():
 
 
 @dataclass
-class CustomLookup(LookupContext):
+class CustomLookup(LookupOutput, Context):
     field: str = None
     count: int = None
     _name_field = "field"

@@ -1,10 +1,9 @@
 #  Copyright (c) 2025 by Higher Expectations for Racine County
 
 from typing import ClassVar
-from ..context import Context
 
 
-class Lookup(Context):
+class Lookup:
     r"""A Context that produces its output name and type from parsed data."""
 
     _name_field: ClassVar[str] = ""

@@ -1,14 +1,17 @@
 #  Copyright (c) 2025 by Higher Expectations for Racine County
-from dataclasses import dataclass, field
+from collections.abc import Iterable
+from dataclasses import dataclass, field, fields
+from itertools import islice
 from typing import Any
 from uuid import uuid4
 
 from .base import Base
-
+from ..parsing.converters import Converter, BuiltInConverter
+from ..parsing import Element, Parser
 
 @dataclass
 class Context(Base):
-    context_id: bytes = field(default_factory = lambda: uuid4().bytes)
+    context_id: bytes = field(default_factory=lambda: uuid4().bytes)
     r"""Data extracted from the heading of a column.
 
     Parameters
@@ -30,3 +33,19 @@ class Context(Base):
     @property
     def primary_key(self) -> bytes:
         return self.context_id
+
+    @classmethod
+    def type_map(cls) -> dict[str, Converter]:
+        return {
+            f.name: BuiltInConverter(f.type) for
+            f in islice(fields(cls), 1, None)
+        }
+
+    @classmethod
+    def build_parser(cls,
+                     elements: Iterable[Element],
+                     separator: str = r"[\s:]",
+                     **kwargs) -> Parser:
+        if not kwargs:
+            kwargs = cls.type_map()
+        return Parser(elements, separator, **kwargs)

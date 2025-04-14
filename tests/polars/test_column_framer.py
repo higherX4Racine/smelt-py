@@ -6,13 +6,13 @@ from polars import String, Int16, UInt8, Series, Object
 
 import pytest
 
-from smelt_py.models import LiteralContext, LookupContext
+from smelt_py.models import Context, LiteralOutput, LookupOutput
 from smelt_py.polars import ContextFramer
 from smelt_py.polars.column_framer import ColumnFramer, Context
 
 
 @dataclass
-class LiteralClass(LiteralContext):
+class LiteralClass(LiteralOutput, Context):
     name: str = None
     rank: int = None
     _name_field = "result"
@@ -20,7 +20,7 @@ class LiteralClass(LiteralContext):
 
 
 @dataclass
-class CustomLookup(LookupContext):
+class CustomLookup(LookupOutput, Context):
     field: str = None
     count: int = None
     _name_field = "field"
@@ -55,12 +55,12 @@ def context_tables():
 
 
 def test_columns_frame(context_tables):
-    source_context = Context(b"source")
+    source_context = LiteralClass(b"source", "a source", -99)
     columns = ColumnFramer()
     context_count = 0
-    for context_key, context_frame in context_tables.items():
-        for i in range(context_frame.frame.height):
-            context = context_frame[i]
+    for context_key, context_framer in context_tables.items():
+        for i in range(context_framer.frame.height):
+            context = context_framer[i]
             columns.add_column(source_context, context_count, context_key, context)
             context_count += 1
 

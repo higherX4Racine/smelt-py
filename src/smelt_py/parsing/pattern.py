@@ -1,8 +1,10 @@
 # Copyright (C) 2025 by Higher Expectations for Racine County
 
+from collections.abc import Iterable
 from functools import reduce
 from itertools import pairwise
 from re import compile, Match
+from typing import Self
 
 from .element import Element
 from .capture import Capture
@@ -13,14 +15,14 @@ class Pattern:
 
     Parameters
     ----------
-    elements: list[Element]
+    elements: Iterable[Element]
         the components, in order, of the regular expression.
     separator: str
         the pattern to delimit separate elements
     """
 
-    def __init__(self, elements: list[Element], separator: str):
-        self._elements = elements
+    def __init__(self, elements: Iterable[Element], separator: str):
+        self._elements = list(elements)
         self._separator = separator
         self._names = [e.name for e in elements if e.is_named]
         self._re = compile(self.render())
@@ -59,7 +61,7 @@ class Pattern:
     def extract(self, string: str) -> list[Capture]:
         return self.captures(self.search(string))
 
-    @staticmethod
-    def from_json(parsed_json: dict) -> "Pattern":
-        return Pattern([Element.from_json(e) for e in parsed_json["elements"]],
-                       parsed_json.get("separator", r"\s"))
+    @classmethod
+    def from_json(cls, parsed_json: dict) -> Self:
+        return cls([Element.from_json(e) for e in parsed_json["elements"]],
+                   parsed_json.get("separator", r"\s"))

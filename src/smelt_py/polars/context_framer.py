@@ -1,10 +1,15 @@
 #  Copyright (c) 2025 by Higher Expectations for Racine County
+
+
 from polars import Binary
 
 from .model_framer import ModelFramer, Schema, Type
+from ..models import Context
 
 
-class ContextFramer[T](ModelFramer):
-    def __init__(self, builder: Type[T], schema: Schema | dict[str,...]):
-        super().__init__(builder,
+class ContextFramer(ModelFramer):
+    def __init__(self,
+                 context_type: Type[Context],
+                 schema: Schema | dict[str, ...]):
+        super().__init__(context_type,
                          {"context_id": Binary} | schema)

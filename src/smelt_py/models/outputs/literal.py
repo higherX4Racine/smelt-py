@@ -3,10 +3,8 @@
 
 from typing import Any, ClassVar
 
-from ..context import Context
 
-
-class Literal(Context):
+class Literal:
     r"""A Context with constant predetermined output name and type."""
 
     _name_field: ClassVar[str] = ""
